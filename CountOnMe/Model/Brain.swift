@@ -12,6 +12,7 @@ import UIKit
 class ElectronicBrain {
     var textView = UITextView()
     var operationTxt = ""
+    var error = false
     
     var elements: [String] { //
         return textView.text.split(separator: " ").map { "\($0)" }
@@ -19,7 +20,7 @@ class ElectronicBrain {
     var expressionCalcul = ""
     // Error check computed variables
     var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
     
     var expressionHaveEnoughElement: Bool {
@@ -27,7 +28,7 @@ class ElectronicBrain {
     }
     
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-"
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
     
     var expressionHaveResult: Bool {
@@ -36,6 +37,10 @@ class ElectronicBrain {
     
     
     func operation(sender:UIButton) {
+        if expressionHaveResult {
+            textView.text = ""
+            return
+        }
         if canAddOperator {
             if let sign = sender.title(for: .normal) {
                 textView.text += " \(sign) "
@@ -52,13 +57,18 @@ class ElectronicBrain {
     }
     
     func addElements(sender:UIButton) {
+        if error {
+            textView.text = ""
+            error = false
+        }
+        if expressionHaveResult {
+            textView.text = ""
+        }
+        
         guard let numberText = sender.title(for: .normal) else {
             return
         }
         
-        if expressionHaveResult {
-            textView.text = ""
-        }
         
         textView.text.append(numberText)
     }
@@ -96,14 +106,24 @@ class ElectronicBrain {
             case "+": result = left + right
             case "-": result = left - right
             case "x": result = left * right
-            case ":": result = left / right
+            case ":":
+                if right != 0 {
+                    result = left / right
+                } else {
+                print("Impossible de diviser par zéro")
+                    error = true
+                    result = 0
+                }
             default: fatalError("Unknown operator !")
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
-        
+        if error {
+            textView.text = "Error"
+        } else {
         textView.text.append(" = \(operationsToReduce.first!)")
+        }
     }
 }
