@@ -26,58 +26,38 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(errorMessageEnoughElements), name: enough, object: nil)
         let textComplete = Notification.Name(rawValue: "messageTextCompleted")
         NotificationCenter.default.addObserver(self, selector: #selector(actionTextComplete), name: textComplete, object: nil)
+        let operatorStarting = Notification.Name(rawValue: "messageErrorStartingOperator")
+        NotificationCenter.default.addObserver(self, selector: #selector(errorMessageOperatorStarting), name: operatorStarting, object: nil)
     }
     // View actions
-    
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         brain.addElements(sender: sender)
-        if let texte = brain.textView.text {
-            print(texte)
-            textView.text = texte
-        }
     }
-    
     @IBAction func operatorsTapped(_ sender: UIButton) {
         brain.operation(sender:sender)
-        if let texte = brain.textView.text {
-            print(texte)
-            print("Taille")
-            
-            textView.font = textView.font?.withSize(40)
-            
-            textView.text = texte
-            
-        }
     }
-    
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         brain.buttonEqualTapped()
-        if let texte = brain.textView.text {
-            print(texte)
-            textView.text = texte
-        }
     }
-    
     @objc func errorMessageOperator() {
-        print("Huston ?")
-        let alertVC = UIAlertController(title: "Zéro!", message: "Un opérateur est déja mis !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        self.present(alertVC, animated: true, completion: nil)
+        erreur(message: "Un opérateur est déja mis !")
     }
     @objc func errorMessageExpression() {
-        print("Huston ?")
-        let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return self.present(alertVC, animated: true, completion: nil)
+        erreur(message: "Entrez une expression correcte !")
     }
     @objc func errorMessageEnoughElements() {
-        print("Huston ?")
-        let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return self.present(alertVC, animated: true, completion: nil)
+        erreur(message: "Démarrez un nouveau calcul !")
+    }
+    @objc func errorMessageOperatorStarting() {
+        erreur(message: "Pas d'opérateur au départ")
     }
     @objc func actionTextComplete() {
         textView.text = brain.textView.text
+    }
+    func erreur(message:String) {
+        let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        self.present(alertVC, animated: true, completion: nil)
     }
     
 }
