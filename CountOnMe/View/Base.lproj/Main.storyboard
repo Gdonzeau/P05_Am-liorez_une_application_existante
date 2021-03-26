@@ -157,10 +157,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ogr-Aw-e1h">
-                                <rect key="frame" x="40" y="512" width="240" height="36"/>
+                                <rect key="frame" x="10" y="500" width="300" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQU-P5-55X">
-                                        <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" red="0.46913260919999999" green="0.7149516575" blue="0.62407517239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="DQU-P5-55X" secondAttribute="height" multiplier="1:1" id="8mM-Fo-Nnb"/>
@@ -169,12 +169,17 @@
                                         <state key="normal" title="+">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="operatorsTapped:" destination="eqK-jh-KKu" eventType="touchUpInside" id="hTw-vg-sOz"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zr-HC-0N9">
-                                        <rect key="frame" x="51" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="63" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" red="0.87294975829999999" green="0.37112226879999999" blue="0.32504552809999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="3zr-HC-0N9" secondAttribute="height" multiplier="1:1" id="Tj8-ZL-Rsu"/>
@@ -188,7 +193,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JMw-2u-BXV">
-                                        <rect key="frame" x="102" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="126" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" red="0.71360510590000004" green="0.84258151049999996" blue="0.90132403370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="JMw-2u-BXV" secondAttribute="height" multiplier="1:1" id="9qF-4X-ji2"/>
@@ -202,7 +207,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btH-nN-hkM">
-                                        <rect key="frame" x="153" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="189" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="btH-nN-hkM" secondAttribute="height" multiplier="1:1" id="Lzn-kJ-bt7"/>
@@ -216,7 +221,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMj-Of-bCU">
-                                        <rect key="frame" x="204" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="252" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" red="0.94643473759999996" green="0.64318747399999998" blue="0.12665354140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="qMj-Of-bCU" secondAttribute="height" multiplier="1:1" id="A5f-dx-2hr"/>
@@ -246,14 +251,14 @@
                         <color key="backgroundColor" red="0.87536688539999996" green="0.84808511389999996" blue="0.83804947389999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="T2H-yn-nBB" firstAttribute="centerX" secondItem="eIh-hr-C95" secondAttribute="centerX" id="1AC-Pz-IYQ"/>
-                            <constraint firstItem="AWJ-Vl-uau" firstAttribute="trailing" secondItem="ogr-Aw-e1h" secondAttribute="trailing" constant="40" id="4X2-FE-Sa2"/>
+                            <constraint firstItem="AWJ-Vl-uau" firstAttribute="trailing" secondItem="ogr-Aw-e1h" secondAttribute="trailing" constant="10" id="4X2-FE-Sa2"/>
                             <constraint firstItem="ogr-Aw-e1h" firstAttribute="top" relation="greaterThanOrEqual" secondItem="isI-Gg-Iye" secondAttribute="bottom" constant="20" id="6SP-XC-sEr"/>
                             <constraint firstItem="T2H-yn-nBB" firstAttribute="top" secondItem="AWJ-Vl-uau" secondAttribute="top" constant="20" id="ABk-Zw-CNo"/>
                             <constraint firstItem="AWJ-Vl-uau" firstAttribute="trailing" secondItem="T2H-yn-nBB" secondAttribute="trailing" constant="20" id="FD5-39-A2i"/>
                             <constraint firstItem="AWJ-Vl-uau" firstAttribute="trailing" secondItem="isI-Gg-Iye" secondAttribute="trailing" constant="20" id="K44-hf-Iii"/>
                             <constraint firstItem="isI-Gg-Iye" firstAttribute="top" secondItem="T2H-yn-nBB" secondAttribute="bottom" constant="30" id="OAO-7O-wFF"/>
                             <constraint firstItem="AWJ-Vl-uau" firstAttribute="bottom" secondItem="ogr-Aw-e1h" secondAttribute="bottom" constant="20" id="YpU-Sr-nCa"/>
-                            <constraint firstItem="ogr-Aw-e1h" firstAttribute="leading" secondItem="AWJ-Vl-uau" secondAttribute="leading" constant="40" id="ezK-o3-Hfc"/>
+                            <constraint firstItem="ogr-Aw-e1h" firstAttribute="leading" secondItem="AWJ-Vl-uau" secondAttribute="leading" constant="10" id="ezK-o3-Hfc"/>
                             <constraint firstItem="isI-Gg-Iye" firstAttribute="leading" secondItem="AWJ-Vl-uau" secondAttribute="leading" constant="20" id="fge-Ch-Plj"/>
                             <constraint firstItem="T2H-yn-nBB" firstAttribute="leading" secondItem="AWJ-Vl-uau" secondAttribute="leading" constant="20" id="zap-0e-bMH"/>
                         </constraints>

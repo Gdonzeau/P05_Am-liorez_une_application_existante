@@ -11,84 +11,77 @@ import UIKit
 
 class ElectronicBrain {
     var textView = UITextView()
-    var operationTxt = ""
+    //var operationTxt = ""
     var error = false
     
     var elements: [String] { //
         return textView.text.split(separator: " ").map { "\($0)" }
     }
-    var expressionCalcul = ""
+    //var expressionCalcul = ""
     // Error check computed variables
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
-    
     var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
-    
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":" && textView.text != ""
     }
-    
     var expressionHaveResult: Bool {
         return textView.text.firstIndex(of: "=") != nil
     }
-    
-    
-    func operation(sender:UIButton) {
+    func operation(sender:UIButton) { // taped an operator
+        
         if expressionHaveResult {
             textView.text = ""
             return
         }
         if canAddOperator {
             if let sign = sender.title(for: .normal) {
-                textView.text += " \(sign) "
+                textView.text.append(" \(sign) ")
             }
-            
         } else {
+            print("pas possible")
+            // Notification pas forcément nécessaire. Le bouton qui ne fonctionne pas peut être suffisant et 
+            let name = Notification.Name(rawValue: "messageErrorOperator")
+            let notification = Notification(name: name)
+            NotificationCenter.default.post(notification)
             // Notification d'alerte
             /*
-            let alertVC = UIAlertController(title: "Zéro!", message: "Un opérateur est déja mis !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alertVC, animated: true, completion: nil)
- */
+             let alertVC = UIAlertController(title: "Zéro!", message: "Un opérateur est déja mis !", preferredStyle: .alert)
+             alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+             self.present(alertVC, animated: true, completion: nil)
+             */
         }
     }
-    
-    func addElements(sender:UIButton) {
+    func addElements(sender:UIButton) { // Tapped number button
         if error {
             textView.text = ""
             error = false
-        }
-        if expressionHaveResult {
-            textView.text = ""
         }
         
         guard let numberText = sender.title(for: .normal) else {
             return
         }
-        
-        
+        if expressionHaveResult {
+            textView.text = ""
+        }
         textView.text.append(numberText)
     }
     
     func buttonEqualTapped() {
         guard expressionIsCorrect else { // chgmt
-            /*
-            let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-            */
+            let name = Notification.Name(rawValue: "messageError")
+            let notification = Notification(name: name)
+            NotificationCenter.default.post(notification)
             return
         }
         
         guard expressionHaveEnoughElement else { // chgmt
-            /*
-            let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-            alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            return self.present(alertVC, animated: true, completion: nil)
-            */
+            let name = Notification.Name(rawValue: "messageError")
+            let notification = Notification(name: name)
+            NotificationCenter.default.post(notification)
             return
         }
         
@@ -97,10 +90,14 @@ class ElectronicBrain {
         
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
+            guard let left = Int(operationsToReduce[0]) else {
+                let name = Notification.Name(rawValue: "messageError")
+                let notification = Notification(name: name)
+                NotificationCenter.default.post(notification)
+                return
+            }
             let operand = operationsToReduce[1]
             let right = Int(operationsToReduce[2])!
-            
             let result: Int
             switch operand {
             case "+": result = left + right
@@ -110,7 +107,7 @@ class ElectronicBrain {
                 if right != 0 {
                     result = left / right
                 } else {
-                print("Impossible de diviser par zéro")
+                    print("Impossible de diviser par zéro")
                     error = true
                     result = 0
                 }
@@ -123,7 +120,8 @@ class ElectronicBrain {
         if error {
             textView.text = "Error"
         } else {
-        textView.text.append(" = \(operationsToReduce.first!)")
+           // print("Réponse : \(result)")
+            textView.text.append(" = \(operationsToReduce.first!)")
         }
     }
 }
