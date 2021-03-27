@@ -108,7 +108,7 @@ class ElectronicBrain { // So were named first calculators
             notifChangeText()
         }
     }
-    func notifChangeText() {
+    private func notifChangeText() {
         let name = Notification.Name(rawValue: "messageTextCompleted")
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
