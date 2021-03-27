@@ -7,15 +7,14 @@
 //
 
 import Foundation
-import UIKit
 
 class ElectronicBrain { // So were named first calculators
-    var textView = UITextView()
+    var textView = ""
     var error = false // Just try to divide by 0...
     var operandProb = false
     
     var elements: [String] { //
-        return textView.text.split(separator: " ").map { "\($0)" }
+        return textView.split(separator: " ").map { "\($0)" }
     }
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
@@ -27,88 +26,51 @@ class ElectronicBrain { // So were named first calculators
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"// && textView.text != ""
     }
     var noOperatorToStart: Bool {
-        return textView.text != ""
+        return textView != ""
     }
     var expressionHaveResult: Bool {
-        return textView.text.firstIndex(of: "=") != nil
+        return textView.firstIndex(of: "=") != nil
     }
-    func operation(sender:UIButton) { // taped an operator
+    func operation(sender:String?) { // taped an operator
         
         if expressionHaveResult {
-            textView.text = ""
+            textView = ""
             return
         }
-        
         if canAddOperator && noOperatorToStart {
-            if let sign = sender.title(for: .normal) {
-                textView.text.append(" \(sign) ")
+            if let sign = sender {
+                textView.append(" \(sign) ")
             }
             notifChangeText()
         }
-        /*
-         else {
-            if noOperatorToStart {
-                print("pas possible")
-                let name = Notification.Name(rawValue: "messageErrorOperator")
-                let notification = Notification(name: name)
-                NotificationCenter.default.post(notification)
-            } else {
-                let name = Notification.Name(rawValue: "messageErrorStartingOperator")
-                let notification = Notification(name: name)
-                NotificationCenter.default.post(notification)
-            }
-        }
- */
     }
-    func addElements(sender:UIButton) { // Tapped number button
+    func addElements(sender:String?) { // Tapped number button
         if error || operandProb {
-            textView.text = ""
+            textView = ""
             error = false
             operandProb = false
         }
-        
-        guard let numberText = sender.title(for: .normal) else {
-            return
-        }
         if expressionHaveResult {
-            textView.text = ""
+            textView = ""
         }
-        textView.text.append(numberText)
+        if let numberText = sender {
+            textView.append(numberText)
+        }
         notifChangeText()
     }
-    
     func buttonEqualTapped() {
         guard expressionIsCorrect else { // chgmt
-            /*
-            let name = Notification.Name(rawValue: "messageErrorExpression")
-            let notification = Notification(name: name)
-            NotificationCenter.default.post(notification)
-            */
             return
         }
-        
         guard expressionHaveEnoughElement else { // chgmt
-            /*
-            let name = Notification.Name(rawValue: "messageErrorEnoughtElements")
-            let notification = Notification(name: name)
-            NotificationCenter.default.post(notification)
-            */
             return
         }
-        
         // Create local copy of operations
         var operationsToReduce = elements // chgmt
-        
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             guard let left = Int(operationsToReduce[0]) else {
-                
                 print("Mé non")
-                /*
-                let name = Notification.Name(rawValue: "messageError")
-                let notification = Notification(name: name)
-                NotificationCenter.default.post(notification)
-                */
                 return
             }
             let operand = operationsToReduce[1]
@@ -130,12 +92,7 @@ class ElectronicBrain { // So were named first calculators
             default:
                 operandProb = true
                 result = 0 // Initializing to avoid error even if it won't be seen
-                /*
-                let name = Notification.Name(rawValue: "messageErrorExpression")
-                let notification = Notification(name: name)
-                NotificationCenter.default.post(notification)
-                */
-                textView.text = ""
+                textView = ""
                 notifChangeText()
             //fatalError("Unknown operator !")
             }
@@ -143,11 +100,11 @@ class ElectronicBrain { // So were named first calculators
                 operationsToReduce.insert("\(result)", at: 0)
         }
         if error || operandProb {
-            textView.text = "Error"
+            textView = "Error"
             notifChangeText()
         } else {
             // print("Réponse : \(result)")
-            textView.text.append(" = \(operationsToReduce.first!)")
+            textView.append(" = \(operationsToReduce.first!)")
             notifChangeText()
         }
     }
