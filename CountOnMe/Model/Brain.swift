@@ -44,7 +44,9 @@ class ElectronicBrain { // So were named first calculators
                 textView.text.append(" \(sign) ")
             }
             notifChangeText()
-        } else {
+        }
+        /*
+         else {
             if noOperatorToStart {
                 print("pas possible")
                 let name = Notification.Name(rawValue: "messageErrorOperator")
@@ -56,6 +58,7 @@ class ElectronicBrain { // So were named first calculators
                 NotificationCenter.default.post(notification)
             }
         }
+ */
     }
     func addElements(sender:UIButton) { // Tapped number button
         if error || operandProb {
@@ -76,16 +79,20 @@ class ElectronicBrain { // So were named first calculators
     
     func buttonEqualTapped() {
         guard expressionIsCorrect else { // chgmt
+            /*
             let name = Notification.Name(rawValue: "messageErrorExpression")
             let notification = Notification(name: name)
             NotificationCenter.default.post(notification)
+            */
             return
         }
         
         guard expressionHaveEnoughElement else { // chgmt
+            /*
             let name = Notification.Name(rawValue: "messageErrorEnoughtElements")
             let notification = Notification(name: name)
             NotificationCenter.default.post(notification)
+            */
             return
         }
         
@@ -95,11 +102,13 @@ class ElectronicBrain { // So were named first calculators
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             guard let left = Int(operationsToReduce[0]) else {
+                
                 print("Mé non")
+                /*
                 let name = Notification.Name(rawValue: "messageError")
                 let notification = Notification(name: name)
                 NotificationCenter.default.post(notification)
-                
+                */
                 return
             }
             let operand = operationsToReduce[1]
@@ -121,9 +130,11 @@ class ElectronicBrain { // So were named first calculators
             default:
                 operandProb = true
                 result = 0 // Initializing to avoid error even if it won't be seen
+                /*
                 let name = Notification.Name(rawValue: "messageErrorExpression")
                 let notification = Notification(name: name)
                 NotificationCenter.default.post(notification)
+                */
                 textView.text = ""
                 notifChangeText()
             //fatalError("Unknown operator !")
