@@ -12,8 +12,8 @@ class ElectronicBrain { // So were named first calculators
     var textView = ""
     var error = false // Just try to divide by 0...
     var operandProb = false
-    
     var elements: [String] { //
+        
         return textView.split(separator: " ").map { "\($0)" }
     }
     var expressionIsCorrect: Bool {
@@ -69,14 +69,16 @@ class ElectronicBrain { // So were named first calculators
         var operationsToReduce = elements // chgmt
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            guard let left = Int(operationsToReduce[0]) else {
+            guard let left = Double(operationsToReduce[0]) else {
                 print("Mé non")
                 return
             }
             let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
-            let result: Int
+            let right = Double(operationsToReduce[2])!
+            let result: Double
             
+            result = calculating(right: right, operand: operand, left: left)
+            /*
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
@@ -96,6 +98,7 @@ class ElectronicBrain { // So were named first calculators
                 notifChangeText()
             //fatalError("Unknown operator !")
             }
+            */
                 operationsToReduce = Array(operationsToReduce.dropFirst(3))
                 operationsToReduce.insert("\(result)", at: 0)
         }
@@ -107,6 +110,30 @@ class ElectronicBrain { // So were named first calculators
             textView.append(" = \(operationsToReduce.first!)")
             notifChangeText()
         }
+    }
+    func calculating (right:Double, operand:String, left:Double)->Double {
+        var result = Double()
+        switch operand {
+        case "+": result = left + right
+        case "-": result = left - right
+        case "x": result = left * right
+        case ":":
+            if right != 0 {
+                result = left / right
+            } else {
+                print("Impossible de diviser par zéro")
+                error = true
+                result = 0
+            }
+        default:
+            operandProb = true
+            result = 0 // Initializing to avoid error even if it won't be seen
+            textView = ""
+            notifChangeText()
+        //fatalError("Unknown operator !")
+        }
+        
+        return result
     }
     private func notifChangeText() {
         let name = Notification.Name(rawValue: "messageTextCompleted")
