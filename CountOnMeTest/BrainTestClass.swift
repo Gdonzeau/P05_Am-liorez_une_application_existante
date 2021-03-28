@@ -37,16 +37,25 @@ class BrainTestClass: XCTestCase {
         brain.operation(sender: "+")
         XCTAssert(brain.elements.count == 0)
     }
+    func testGivenErrorIsTrue_WhenTappedNumbers_ThenFirstElementsIsEmpty() {
+        brain.error = true
+        brain.addElements(sender: "1")
+        XCTAssert(brain.error == false)
+    }
     func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
         brain.addElements(sender: "1")
         brain.addElements(sender: "2")
-        brain.operation(sender: "/")
+        brain.operation(sender: ":")
         brain.addElements(sender: "0")
         brain.buttonEqualTapped()
         XCTAssert(brain.error == true)
         XCTAssert(brain.textView == "Error")
+        /*
+        brain.operation(sender: "+")
+        XCTAssert(brain.textView == "")
+ */
     }
-    func testGivenElementsFirstExists_WhenEqualIsTaped_ThenResultIsGiven() {
+    func testGivenAllElementsExist_WhenEqualIsTaped_ThenResultIsGivenForAllOperators() {
         brain.addElements(sender: "1")
         brain.addElements(sender: "2")
         brain.operation(sender: "+")
@@ -71,9 +80,11 @@ class BrainTestClass: XCTestCase {
         operand = "-"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 6)
+        
         operand = ":"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 2)
+        
         operand = "x"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 72)

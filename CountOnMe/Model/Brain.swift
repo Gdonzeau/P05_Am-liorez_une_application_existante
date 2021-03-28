@@ -78,27 +78,6 @@ class ElectronicBrain { // So were named first calculators
             let result: Double
             
             result = calculating(right: right, operand: operand, left: left)
-            /*
-            switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            case "x": result = left * right
-            case ":":
-                if right != 0 {
-                    result = left / right
-                } else {
-                    print("Impossible de diviser par zéro")
-                    error = true
-                    result = 0
-                }
-            default:
-                operandProb = true
-                result = 0 // Initializing to avoid error even if it won't be seen
-                textView = ""
-                notifChangeText()
-            //fatalError("Unknown operator !")
-            }
-            */
                 operationsToReduce = Array(operationsToReduce.dropFirst(3))
                 operationsToReduce.insert("\(result)", at: 0)
         }
@@ -117,6 +96,7 @@ class ElectronicBrain { // So were named first calculators
         case "+": result = left + right
         case "-": result = left - right
         case "x": result = left * right
+            /*
         case ":":
             if right != 0 {
                 result = left / right
@@ -125,12 +105,22 @@ class ElectronicBrain { // So were named first calculators
                 error = true
                 result = 0
             }
-        default:
+ */
+        default: // If not +, - or x so only : can be taped
+            if right != 0 {
+                result = left / right
+            } else {
+                print("Impossible de diviser par zéro")
+                error = true
+                result = 0
+            }
+            /*
             operandProb = true
             result = 0 // Initializing to avoid error even if it won't be seen
             textView = ""
             notifChangeText()
         //fatalError("Unknown operator !")
+ */
         }
         
         return result
