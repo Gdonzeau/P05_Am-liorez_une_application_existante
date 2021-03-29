@@ -15,12 +15,10 @@ class BrainTestClass: XCTestCase {
     override func setUp() {
         super.setUp()
     }
-    
-    func testGivenInstanceOfElectronicBrain_WhenAccessingIt_ThenItExists() {
+    func testGivenInstanceOfElectronicBrain_WhenAccessingIt_ThenItExists() { // To delete ?
         XCTAssertNotNil(brain)
-        
     }
-    func testGivenElementsIsEmpty_WhenTappedNumbers_ThenElementsCountIsOne() {
+    func testGivenElementsIsEmpty_WhenTappedNumbers_ThenElementsCountIsOne() { // To delete too, as if the next func is true, that means that count == 1
         brain.addElements(sender: "1")
         XCTAssert(brain.elements.count == 1)
     }
@@ -74,37 +72,6 @@ class BrainTestClass: XCTestCase {
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 72)
     }
-    /*
-    func testGivenAdditionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
-        brain.addElements(sender: "1")
-        brain.addElements(sender: "2")
-        brain.operation(sender: "+")
-        brain.addElements(sender: "8")
-        brain.buttonEqualTapped()
-        var left = Double()
-        var right = Double()
-        var operand = String()
-        if let leftPart = Double(brain.elements[0]) {
-            left = leftPart
-        }
-        if let rightPart = Double(brain.elements[2]) {
-            right = rightPart
-        }
-        let operandSign = brain.elements[1]
-        operand = operandSign
-        var result = brain.calculating(right: right, operand: operandSign, left: left)
-        XCTAssert(result == 20)
-    }
-    func testGivenSubstractionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
-        
-    }
-    func testGivenMultiplicationIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
-        
-    }
-    func testGivenDivisionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
-        
-    }
-    */
     func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpressionDoesntHaveEnoughtElements() {
         brain.addElements(sender: "1")
         brain.addElements(sender: "2")
@@ -127,10 +94,6 @@ class BrainTestClass: XCTestCase {
         brain.buttonEqualTapped()
         XCTAssert(brain.error == true)
         XCTAssert(brain.textView == "Error")
-        /*
-        brain.operation(sender: "+")
-        XCTAssert(brain.textView == "")
- */
     }
     func testGivenOperationIsFinished_WhenNumberIsTaped_ThenTextIsEmptyAndAddNumber() {
         brain.addElements(sender: "1")
@@ -157,5 +120,4 @@ class BrainTestClass: XCTestCase {
         brain.buttonEqualTapped()
         XCTAssert(brain.expressionHasEnoughElement == false)
     }
-    
 }

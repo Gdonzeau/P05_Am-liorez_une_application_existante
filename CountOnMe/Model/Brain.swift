@@ -70,12 +70,6 @@ class ElectronicBrain { // So were named first calculators
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             let left = Double(operationsToReduce[0])!
-            /*
-            guard let left = Double(operationsToReduce[0]) else {
-                print("Mé non")
-                return
-            }
-            */
             let operand = operationsToReduce[1]
             let right = Double(operationsToReduce[2])!
             let result: Double
@@ -99,16 +93,6 @@ class ElectronicBrain { // So were named first calculators
         case "+": result = left + right
         case "-": result = left - right
         case "x": result = left * right
-            /*
-        case ":":
-            if right != 0 {
-                result = left / right
-            } else {
-                print("Impossible de diviser par zéro")
-                error = true
-                result = 0
-            }
- */
         default: // If not +, - or x so only : can be taped
             if right != 0 {
                 result = left / right
@@ -117,15 +101,7 @@ class ElectronicBrain { // So were named first calculators
                 error = true
                 result = 0
             }
-            /*
-            operandProb = true
-            result = 0 // Initializing to avoid error even if it won't be seen
-            textView = ""
-            notifChangeText()
-        //fatalError("Unknown operator !")
- */
         }
-        
         return result
     }
     private func notifChangeText() {
