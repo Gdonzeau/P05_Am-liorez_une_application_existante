@@ -19,7 +19,7 @@ class ElectronicBrain { // So were named first calculators
     var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
-    var expressionHaveEnoughElement: Bool {
+    var expressionHasEnoughElement: Bool {
         return elements.count >= 3
     }
     var canAddOperator: Bool {
@@ -28,12 +28,12 @@ class ElectronicBrain { // So were named first calculators
     var noOperatorToStart: Bool {
         return textView != ""
     }
-    var expressionHaveResult: Bool {
+    var expressionHasResult: Bool {
         return textView.firstIndex(of: "=") != nil
     }
     func operation(sender:String?) { // taped an operator
         
-        if expressionHaveResult {
+        if expressionHasResult {
             textView = ""
             return
         }
@@ -50,7 +50,7 @@ class ElectronicBrain { // So were named first calculators
             error = false
             operandProb = false
         }
-        if expressionHaveResult {
+        if expressionHasResult {
             textView = ""
         }
         if let numberText = sender {
@@ -62,17 +62,20 @@ class ElectronicBrain { // So were named first calculators
         guard expressionIsCorrect else { // chgmt
             return
         }
-        guard expressionHaveEnoughElement else { // chgmt
+        guard expressionHasEnoughElement else { // chgmt
             return
         }
         // Create local copy of operations
         var operationsToReduce = elements // chgmt
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
+            let left = Double(operationsToReduce[0])!
+            /*
             guard let left = Double(operationsToReduce[0]) else {
                 print("Mé non")
                 return
             }
+            */
             let operand = operationsToReduce[1]
             let right = Double(operationsToReduce[2])!
             let result: Double

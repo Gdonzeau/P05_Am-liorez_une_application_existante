@@ -42,24 +42,12 @@ class BrainTestClass: XCTestCase {
         brain.addElements(sender: "1")
         XCTAssert(brain.error == false)
     }
-    func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
-        brain.addElements(sender: "1")
-        brain.addElements(sender: "2")
-        brain.operation(sender: ":")
-        brain.addElements(sender: "0")
-        brain.buttonEqualTapped()
-        XCTAssert(brain.error == true)
-        XCTAssert(brain.textView == "Error")
-        /*
-        brain.operation(sender: "+")
-        XCTAssert(brain.textView == "")
- */
-    }
     func testGivenAllElementsExist_WhenEqualIsTaped_ThenResultIsGivenForAllOperators() {
         brain.addElements(sender: "1")
         brain.addElements(sender: "2")
         brain.operation(sender: "+")
         brain.addElements(sender: "6")
+        brain.buttonEqualTapped()
         var left = Double()
         var right = Double()
         var operand = String()
@@ -71,9 +59,6 @@ class BrainTestClass: XCTestCase {
         }
         let operandSign = brain.elements[1]
         operand = operandSign
-        //var resultance = Double()
-        //brain.buttonEqualTapped()
-        
         var result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 18)
         
@@ -88,7 +73,89 @@ class BrainTestClass: XCTestCase {
         operand = "x"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssert(result == 72)
+    }
+    /*
+    func testGivenAdditionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: "+")
+        brain.addElements(sender: "8")
+        brain.buttonEqualTapped()
+        var left = Double()
+        var right = Double()
+        var operand = String()
+        if let leftPart = Double(brain.elements[0]) {
+            left = leftPart
+        }
+        if let rightPart = Double(brain.elements[2]) {
+            right = rightPart
+        }
+        let operandSign = brain.elements[1]
+        operand = operandSign
+        var result = brain.calculating(right: right, operand: operandSign, left: left)
+        XCTAssert(result == 20)
+    }
+    func testGivenSubstractionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
         
+    }
+    func testGivenMultiplicationIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
+        
+    }
+    func testGivenDivisionIsReady_WhenEqualIsTaped_ThenResultIsGiven() {
+        
+    }
+    */
+    func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpressionDoesntHaveEnoughtElements() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: "+")
+        brain.buttonEqualTapped()
+        XCTAssert(brain.expressionHasEnoughElement == false)
+    }
+    func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpresionIsNotCorrect() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: "+")
+        brain.buttonEqualTapped()
+        XCTAssert(brain.expressionIsCorrect == false)
+    }
+    func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: ":")
+        brain.addElements(sender: "0")
+        brain.buttonEqualTapped()
+        XCTAssert(brain.error == true)
+        XCTAssert(brain.textView == "Error")
+        /*
+        brain.operation(sender: "+")
+        XCTAssert(brain.textView == "")
+ */
+    }
+    func testGivenOperationIsFinished_WhenNumberIsTaped_ThenTextIsEmptyAndAddNumber() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: "+")
+        brain.addElements(sender: "6")
+        brain.buttonEqualTapped()
+        brain.addElements(sender: "1")
+        XCTAssert(brain.elements[0] == "1")
+    }
+    func testGivenOperationIsFinished_WhenOperatorIsTaped_ThenTextIsEmpty() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        brain.operation(sender: "+")
+        brain.addElements(sender: "6")
+        brain.buttonEqualTapped()
+        brain.operation(sender: "+")
+        XCTAssert(brain.textView == "")
+    }
+    func testGivenOneElement_WhenEqualIsTaped_ThenNotEnoughElements() {
+        brain.addElements(sender: "1")
+        brain.addElements(sender: "2")
+        //brain.operation(sender: "+")
+        brain.buttonEqualTapped()
+        XCTAssert(brain.expressionHasEnoughElement == false)
     }
     
 }
