@@ -11,7 +11,6 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
-    @IBOutlet var Operators: [UIButton]! // [+,-,x,:,=]
     let brain = ElectronicBrain()
     // View Life cycles
     override func viewDidLoad() {
@@ -20,19 +19,22 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(actionTextComplete), name: textComplete, object: nil)
     }
     // View actions
+    @IBAction func AC(_ sender: UIButton) {
+        brain.AC()
+    }
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         let message = sender.title(for: .normal)
         brain.addElements(sender: message)
     }
     @IBAction func operatorsTapped(_ sender: UIButton) {
         let message = sender.title(for: .normal)
-        brain.operation(sender:message)
+        brain.operation(signOperator:message)
     }
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         brain.buttonEqualTapped()
     }
     @objc func actionTextComplete() {
-        textView.text = brain.textView
+        textView.text = brain.operationInCreation
     }
 }
 
