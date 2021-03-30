@@ -129,15 +129,18 @@ class ElectronicBrain { // So were named first calculators
                     operationsToReduce.insert(String(resultDouble), at: index-1)
                     break
                 }
+            }
+            for index in 0 ..< operationsToReduce.count {
+                if operationsToReduce[index] == "x" || operationsToReduce[index] == ":" {
+                    print("encore un...")
+                    noMultiplyOrDivide = false
+                    break
+                } else {
+                    print("Terminé")
+                    noMultiplyOrDivide = true
+                }
                 
             }
-            print("Terminé")
-            noMultiplyOrDivide = true
-            /*
-            if index-1 == operationsToReduce.count {
-                noMultiplyOrDivide = true
-            }
-*/
         }
         
         // Iterate over operations while an operand still here
