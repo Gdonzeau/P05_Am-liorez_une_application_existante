@@ -18,7 +18,7 @@ class BrainTestClass: XCTestCase {
     func testGivenInstanceOfElectronicBrain_WhenAccessingIt_ThenItExists() { // To delete ?
         XCTAssertNotNil(brain)
     }
-    func testGivenElementsIsEmpty_WhenTappedNumbers_ThenElementsCountIsOne() { // To delete too, as if the next func is true, that means that count == 1
+    func testGivenElementsIsEmpty_WhenTappedNumbers_ThenElementsCountIsOne() { // To delete too, as if the next func is true, that means that count == 1 ?
         brain.addElements(sender: "1")
         XCTAssert(brain.elements.count == 1)
     }
@@ -116,7 +116,6 @@ class BrainTestClass: XCTestCase {
     func testGivenOneElement_WhenEqualIsTaped_ThenNotEnoughElements() {
         brain.addElements(sender: "1")
         brain.addElements(sender: "2")
-        //brain.operation(sender: "+")
         brain.buttonEqualTapped()
         XCTAssert(brain.expressionHasEnoughElement == false)
     }
