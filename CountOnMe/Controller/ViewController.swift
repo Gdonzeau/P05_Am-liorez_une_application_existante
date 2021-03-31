@@ -22,12 +22,12 @@ class ViewController: UIViewController {
     @IBAction func AC(_ sender: UIButton) {
         brain.AC()
     }
-    @IBAction func tappedNumberButton(_ sender: UIButton) {
-        let message = sender.title(for: .normal)
-        brain.addElements(sender: message)
+    @IBAction func tappedNumberButton(_ digit: UIButton) {
+        let message = digit.title(for: .normal)
+        brain.addElements(digit: message)
     }
-    @IBAction func operatorsTapped(_ sender: UIButton) {
-        let message = sender.title(for: .normal)
+    @IBAction func operatorsTapped(_ signOperator: UIButton) {
+        let message = signOperator.title(for: .normal)
         brain.operation(signOperator:message)
     }
     @IBAction func tappedEqualButton(_ sender: UIButton) {

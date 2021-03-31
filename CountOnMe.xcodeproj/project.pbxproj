@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		046AD632260FDEC1006E1762 /* BrainTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046AD631260FDEC1006E1762 /* BrainTestClass.swift */; };
 		046D59152608CE7D009AF053 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D59142608CE7D009AF053 /* Brain.swift */; };
+		04BB161E2614BC2300538490 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D59142608CE7D009AF053 /* Brain.swift */; };
 		1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BD2224E569900F565CB /* AppDelegate.swift */; };
 		1FA43BD5224E569900F565CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA43BD4224E569900F565CB /* ViewController.swift */; };
 		1FA43BD8224E569900F565CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BD6224E569900F565CB /* Main.storyboard */; };
@@ -233,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04BB161E2614BC2300538490 /* Brain.swift in Sources */,
 				046AD632260FDEC1006E1762 /* BrainTestClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

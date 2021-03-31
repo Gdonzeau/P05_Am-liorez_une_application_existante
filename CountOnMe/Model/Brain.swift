@@ -40,9 +40,14 @@ class ElectronicBrain { // So were named first calculators
     var noOperatorToStart: Bool {
         return operationInCreation != ""
     }
-    var rightElementIsNotZero : Bool {
-        return true //elements[2] != "0"
+    var operatorIsDivide : Bool {
+        return elements.last == ":"
     }
+    /*
+    var elementIsZero : Bool {
+        return elements.last == "0"
+    }
+    */
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
@@ -58,14 +63,28 @@ class ElectronicBrain { // So were named first calculators
             return
             }
         }
+        
         if canAddOperator && noOperatorToStart {
             if let sign = signOperator {
                 operationInCreation.append(" \(sign) ")
             }
-            //notifChangeText()
         }
     }
-    func addElements(sender:String?) { // Tapped number button
+    func addElements(digit:String?) { // Tapped number button
+        var divideBy0 = false
+        if operatorIsDivide {
+            print("Nous avons un divisé")
+            if let check = digit {
+                if check == "0" {
+            print(operatorIsDivide)
+            //if let check = digit {
+                //if check == "0" {
+                    print("don't divide by 0")
+                    divideBy0 = true
+            }
+                }
+            }
+        //}
         if error || operandProb {
             operationInCreation = ""
             error = false
@@ -75,15 +94,15 @@ class ElectronicBrain { // So were named first calculators
             operationInCreation = ""
             resultIsInt = false
         }
-        /*
-        if operationInCreation == "0" {
-            operationInCreation = ""
+        if let numberText = digit {
+            var textWritten = ""
+            if divideBy0 {
+                textWritten = ""
+            } else {
+                textWritten = numberText
+            }
+            operationInCreation.append(textWritten)
         }
-        */
-        if let numberText = sender {
-            operationInCreation.append(numberText)
-        }
-        //notifChangeText()
     }
     func AC() {
         operationInCreation = ""
@@ -95,13 +114,9 @@ class ElectronicBrain { // So were named first calculators
         guard expressionHasEnoughElement else { // chgmt
             return
         }
-        guard rightElementIsNotZero else {
-            return
-        }
         // Create local copy of operations
         var operationsToReduce = elements // chgmt
         // Let's start with x and :
-        //var counter = 0
         var left = 1.00
         var right = 1.00
         var operand = ""
@@ -139,7 +154,17 @@ class ElectronicBrain { // So were named first calculators
                     print("Terminé")
                     noMultiplyOrDivide = true
                 }
-                
+            }
+        }
+        if operationsToReduce.count == 1 {
+            var number = 0.0
+            var numberInt = 0
+            if let extract = Double(operationsToReduce[0]) {
+                number = extract
+                if number/Double(Int(number)) == 1 || number == 0 {
+                    numberInt = Int(number)
+                    operationsToReduce[0] = String(numberInt)
+                }
             }
         }
         
@@ -170,8 +195,14 @@ class ElectronicBrain { // So were named first calculators
             //notifChangeText()
         }
     }
+    /*
+    func doubleOrInt () {
+        
+    }
+    */
     func calculating (right:Double, operand:String, left:Double)->Double {
         var result = Double()
+        resultIsInt = false
         switch operand {
         case "+": result = left + right
         case "-": result = left - right
