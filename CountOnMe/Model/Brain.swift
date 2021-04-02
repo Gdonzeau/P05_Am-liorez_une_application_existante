@@ -44,23 +44,22 @@ class ElectronicBrain { // So were named first calculators
         return elements.last == ":"
     }
     /*
-    var elementIsZero : Bool {
-        return elements.last == "0"
-    }
-    */
+     var elementIsZero : Bool {
+     return elements.last == "0"
+     }
+     */
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
-    func operation(signOperator:String?) { // taped an operator // Pas "sender mais operator
-        
+    func operation(signOperator:String?) { // taped an operator 
         if expressionHasResult {
             operationInCreation = ""
             return
         }
         if signOperator == "-" && (cantAddMinus == false || cantAddMinusII == false) {
             if let sign = signOperator {
-            operationInCreation.append(" \(sign)") //Not space at the end, to be added to the number
-            return
+                operationInCreation.append(" \(sign)") //Not space at the end, to be added to the number
+                return
             }
         }
         
@@ -76,15 +75,12 @@ class ElectronicBrain { // So were named first calculators
             print("Nous avons un divisé")
             if let check = digit {
                 if check == "0" {
-            print(operatorIsDivide)
-            //if let check = digit {
-                //if check == "0" {
+                    print(operatorIsDivide)
                     print("don't divide by 0")
                     divideBy0 = true
-            }
                 }
             }
-        //}
+        }
         if error || operandProb {
             operationInCreation = ""
             error = false
@@ -121,10 +117,21 @@ class ElectronicBrain { // So were named first calculators
         var right = 1.00
         var operand = ""
         var noMultiplyOrDivide = false
-        while noMultiplyOrDivide != true {
+        
+        while noMultiplyOrDivide != true { // All operations x and : first
             print("On recommence")
+            for index in 0 ..< operationsToReduce.count {
+                if operationsToReduce[index] == "x" || operationsToReduce[index] == ":" {
+                    print("encore un...")
+                    noMultiplyOrDivide = false
+                    break
+                } else {
+                    print("Terminé")
+                    noMultiplyOrDivide = true
+                }
+            }
             for index in 0 ..< operationsToReduce.count-1 {
-              print(index)
+                print(index)
                 if operationsToReduce[index] == "x" || operationsToReduce[index] == ":" {
                     print("Signe trouvé")
                     if let firstElement = Double(operationsToReduce[index-1]) {
@@ -138,21 +145,11 @@ class ElectronicBrain { // So were named first calculators
                     print("Résultat : \(resultDouble)")
                     for _ in 0..<3 {
                         print("suppr : \(operationsToReduce[index-1])")
-                    operationsToReduce.remove(at: index-1)
+                        operationsToReduce.remove(at: index-1)
                     }
                     print("insertion : \(resultDouble) at \(index - 1)")
                     operationsToReduce.insert(String(resultDouble), at: index-1)
                     break
-                }
-            }
-            for index in 0 ..< operationsToReduce.count {
-                if operationsToReduce[index] == "x" || operationsToReduce[index] == ":" {
-                    print("encore un...")
-                    noMultiplyOrDivide = false
-                    break
-                } else {
-                    print("Terminé")
-                    noMultiplyOrDivide = true
                 }
             }
         }
@@ -167,7 +164,6 @@ class ElectronicBrain { // So were named first calculators
                 }
             }
         }
-        
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             let left = Double(operationsToReduce[0])!
@@ -181,9 +177,11 @@ class ElectronicBrain { // So were named first calculators
                 resultInt = Int(resultDouble)
                 operationsToReduce = Array(operationsToReduce.dropFirst(3))
                 operationsToReduce.insert("\(resultInt)", at: 0)
+                print ("résultat entier : \(resultInt)")
             } else {
                 operationsToReduce = Array(operationsToReduce.dropFirst(3))
                 operationsToReduce.insert("\(resultDouble)", at: 0)
+                print ("résultat double : \(resultDouble)")
             }
         }
         if error || operandProb {
@@ -196,10 +194,10 @@ class ElectronicBrain { // So were named first calculators
         }
     }
     /*
-    func doubleOrInt () {
-        
-    }
-    */
+     func doubleOrInt () {
+     
+     }
+     */
     func calculating (right:Double, operand:String, left:Double)->Double {
         var result = Double()
         resultIsInt = false
