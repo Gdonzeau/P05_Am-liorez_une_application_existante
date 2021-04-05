@@ -109,14 +109,7 @@ class BrainTestClass: XCTestCase {
         operand = "x"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssertEqual(result,-54)
-        /*
-        left = -6.5
-        //operand = "-"
-        result = brain.calculating(right: right, operand: operand, left: left)
-        XCTAssertEqual(result,-39)
-        */
     }
-    
     func testGivenfirstElement_WhenDividingBy0_ThenDivideBy0IsTrue() {
         XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "1")
@@ -134,53 +127,53 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.expressionHasEnoughElement,false)
     }
     func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpresionIsNotCorrect() {
-        XCTAssertTrue(brain.elements.count == 0)
-        XCTAssertTrue(brain.expressionIsCorrect == true)
+        XCTAssertEqual(brain.elements.count,0)
+        XCTAssertEqual(brain.expressionIsCorrect,true)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
         brain.buttonEqualTapped()
-        XCTAssertTrue(brain.expressionIsCorrect == false)
+        XCTAssertEqual(brain.expressionIsCorrect,false)
     }
     func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
-        XCTAssertFalse(brain.error == true)
-        XCTAssertFalse(brain.operationInCreation == "Error")
+        XCTAssertNotEqual(brain.error,true)
+        XCTAssertNotEqual(brain.operationInCreation,"Error")
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: ":")
         brain.operation(signOperator:"-")
         brain.addElements(digit: "0")
         brain.buttonEqualTapped()
-        XCTAssertTrue(brain.error == true)
-        XCTAssertTrue(brain.operationInCreation == "Error")
+        XCTAssertEqual(brain.error,true)
+        XCTAssertEqual(brain.operationInCreation,"Error")
     }
     func testGivenOperationIsFinished_WhenNumberIsTaped_ThenTextIsEmptyAndAddNumber() {
-        XCTAssertTrue(brain.elements.count == 0)
+        XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "3")
-        XCTAssertTrue(brain.elements[0] == "3")
+        XCTAssertEqual(brain.elements[0],"3")
         brain.addElements(digit: "2")
-        XCTAssertTrue(brain.elements[0] == "32")
+        XCTAssertEqual(brain.elements[0],"32")
         brain.operation(signOperator: "+")
         brain.addElements(digit: "6")
         brain.buttonEqualTapped()
         brain.addElements(digit: "1")
-        XCTAssertTrue(brain.elements[0] == "1")
+        XCTAssertEqual(brain.elements[0],"1")
     }
     func testGivenOperationIsFinished_WhenOperatorIsTaped_ThenTextIsEmpty() {
-        XCTAssertTrue(brain.elements.count == 0)
+        XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
         brain.addElements(digit: "6")
         brain.buttonEqualTapped()
         brain.operation(signOperator: "+")
-        XCTAssertTrue(brain.operationInCreation == "")
+        XCTAssertEqual(brain.operationInCreation,"")
     }
     func testGivenOneElement_WhenEqualIsTaped_ThenNotEnoughElements() {
-        XCTAssertTrue(brain.elements.count == 0)
+        XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.buttonEqualTapped()
-        XCTAssert(brain.expressionHasEnoughElement == false)
+        XCTAssertEqual(brain.expressionHasEnoughElement,false)
     }
 }
