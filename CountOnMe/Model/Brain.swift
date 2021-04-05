@@ -51,6 +51,15 @@ class ElectronicBrain { // So were named first calculators
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
+    // Test closures
+    /*
+     var var01 = 2
+     var var02 = 3
+     
+     func test () -> Int { () -> Int in let var03 = self.var01 + self.var02
+     return var03
+     }
+     */
     func operation(signOperator:String?) { // taped an operator 
         if expressionHasResult {
             operationInCreation = ""
@@ -103,6 +112,53 @@ class ElectronicBrain { // So were named first calculators
     func AC() {
         operationInCreation = ""
     }
+    func buttonEqualTapped_SecondVersion() {
+        guard expressionIsCorrect else { // chgmt
+            return
+        }
+        guard expressionHasEnoughElement else { // chgmt
+            return
+        }
+        // Create local copy of operations
+        var operationsToReduce = elements // chgmt
+        var left = 1.00
+        var right = 1.00
+        var operand = ""
+        var noMultiplyOrDivide = false
+        
+        while noMultiplyOrDivide != true {
+            var operandIndex = 1
+            if let indexTest = operationsToReduce.firstIndex { element -> Bool in // On trouve x ou : dans elements //First index cherche dans le tableau // Retourne le premier index où la condition est vraie.
+                return element == "x" || element == ":"
+            } {
+                print("Il y a des signes prioritaires")
+                // On trouve des symboles "multiplier" ou "diviser"
+                operandIndex = indexTest //
+                if let firstElement = Double(operationsToReduce[operandIndex-1]) {
+                    left = firstElement
+                }
+                operand = operationsToReduce[operandIndex]
+                if let secondElement = Double(operationsToReduce[operandIndex+1]) {
+                    right = secondElement
+                }
+                let resultDouble = calculating(right: right, operand: operand, left: left)
+                print("Résultat : \(resultDouble)")
+                for _ in 0..<3 {
+                    print("suppr : \(operationsToReduce[operandIndex - 1])")
+                    operationsToReduce.remove(at: operandIndex-1)
+                }
+                print("insertion : \(resultDouble) at \(operandIndex - 1)")
+                operationsToReduce.insert(String(resultDouble), at: operandIndex-1)
+                break
+                
+            }
+            
+            else {
+                print("il n'y en a plus")
+                noMultiplyOrDivide = true
+            }
+        }
+    }
     func buttonEqualTapped() {
         guard expressionIsCorrect else { // chgmt
             return
@@ -121,6 +177,7 @@ class ElectronicBrain { // So were named first calculators
         while noMultiplyOrDivide != true { // All operations x and : first
             print("On recommence")
             for index in 0 ..< operationsToReduce.count {
+                
                 if operationsToReduce[index] == "x" || operationsToReduce[index] == ":" {
                     print("encore un...")
                     noMultiplyOrDivide = false
@@ -144,7 +201,7 @@ class ElectronicBrain { // So were named first calculators
                     let resultDouble = calculating(right: right, operand: operand, left: left)
                     print("Résultat : \(resultDouble)")
                     for _ in 0..<3 {
-                        print("suppr : \(operationsToReduce[index-1])")
+                        print("suppr : \(operationsToReduce[index - 1])")
                         operationsToReduce.remove(at: index-1)
                     }
                     print("insertion : \(resultDouble) at \(index - 1)")
@@ -166,7 +223,14 @@ class ElectronicBrain { // So were named first calculators
         }
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Double(operationsToReduce[0])!
+            
+            var operandIndex = 1
+            if let indexTest = operationsToReduce.firstIndex { element -> Bool in // On trouve x dans elements //First index cherche dans le tableau // Retourne le premier index où la condition est vraie.
+                return element == "x" || element == ":"
+            } {
+                operandIndex = indexTest //
+            }
+            let left = Double(operationsToReduce[0])! // Guard let et pas !
             let operand = operationsToReduce[1]
             let right = Double(operationsToReduce[2])!
             let resultDouble: Double
@@ -175,7 +239,7 @@ class ElectronicBrain { // So were named first calculators
             resultDouble = calculating(right: right, operand: operand, left: left)
             if resultIsInt {
                 resultInt = Int(resultDouble)
-                operationsToReduce = Array(operationsToReduce.dropFirst(3))
+                operationsToReduce = Array(operationsToReduce.dropFirst(3)) // On remplace avec le principe du remove en ayant l'index.
                 operationsToReduce.insert("\(resultInt)", at: 0)
                 print ("résultat entier : \(resultInt)")
             } else {

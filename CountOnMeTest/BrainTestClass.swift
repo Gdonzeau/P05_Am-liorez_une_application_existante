@@ -10,12 +10,28 @@ import XCTest
 @testable import CountOnMe
 
 class BrainTestClass: XCTestCase {
-    var brain = ElectronicBrain()
+    var brain:ElectronicBrain!
     
-    override func setUp() {
+    override func setUp() { // Se lance avant chaque fonction test
         super.setUp()
+            // Initialiser brain.
+        brain = ElectronicBrain() // Remet tout à zéro. Nouvel objet
         
     }
+    override class func tearDown() { // Se lance une fois que TOUS les tests sont faits.
+            }
+    override func tearDown() { // Se lance après chaque fonction test
+        brain = nil
+        super.tearDown()
+    }
+    override class func setUp() { // Tout premier
+        
+    }
+    
+    
+    
+    
+    
     func testGivenInstanceOfElectronicBrain_WhenAccessingIt_ThenItExists() { // To delete ?
         XCTAssertNotNil(brain)
     }
@@ -136,6 +152,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.expressionIsCorrect,false)
     }
     func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
+        XCTAssertFalse(brain.error) // *********************
         XCTAssertNotEqual(brain.error,true)
         XCTAssertNotEqual(brain.operationInCreation,"Error")
         brain.addElements(digit: "1")
@@ -144,7 +161,7 @@ class BrainTestClass: XCTestCase {
         brain.operation(signOperator:"-")
         brain.addElements(digit: "0")
         brain.buttonEqualTapped()
-        XCTAssertEqual(brain.error,true)
+        XCTAssertTrue(brain.error)
         XCTAssertEqual(brain.operationInCreation,"Error")
     }
     func testGivenOperationIsFinished_WhenNumberIsTaped_ThenTextIsEmptyAndAddNumber() {
