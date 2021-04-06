@@ -28,10 +28,6 @@ class BrainTestClass: XCTestCase {
         
     }
     
-    
-    
-    
-    
     func testGivenInstanceOfElectronicBrain_WhenAccessingIt_ThenItExists() { // To delete ?
         XCTAssertNotNil(brain)
     }

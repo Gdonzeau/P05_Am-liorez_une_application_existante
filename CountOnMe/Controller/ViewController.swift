@@ -31,8 +31,8 @@ class ViewController: UIViewController {
         brain.operation(signOperator:message)
     }
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        brain.buttonEqualTapped_SecondVersion()
-        //brain.buttonEqualTapped()
+        //brain.buttonEqualTapped_SecondVersion()
+        brain.buttonEqualTapped()
         
     }
     @objc func actionTextComplete() {
