@@ -51,15 +51,8 @@ class ElectronicBrain { // So were named first calculators
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
-    // Test closures
-    /*
-     var var01 = 2
-     var var02 = 3
-     
-     func test () -> Int { () -> Int in let var03 = self.var01 + self.var02
-     return var03
-     }
-     */
+    
+    
     func operation(signOperator:String?) { // taped an operator 
         if expressionHasResult {
             operationInCreation = ""
@@ -124,13 +117,14 @@ class ElectronicBrain { // So were named first calculators
         var left = 1.00
         var right = 1.00
         var operand = ""
-        var noMultiplyOrDivide = false
-        
-        while noMultiplyOrDivide != true {
+       // var noMultiplyOrDivide = false
+        while operationsToReduce.count > 1 {
             var operandIndex = 1
-            if let indexTest = operationsToReduce.firstIndex { element -> Bool in // On trouve x ou : dans elements //First index cherche dans le tableau // Retourne le premier index où la condition est vraie.
+            // On trouve x ou : dans elements //First index cherche dans le tableau
+            // Retourne le premier index où la condition est vraie.
+            if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "x" || element == ":"
-            } {
+            }) {
                 print("Il y a des signes prioritaires")
                 // On trouve des symboles "multiplier" ou "diviser"
                 operandIndex = indexTest //
@@ -149,14 +143,47 @@ class ElectronicBrain { // So were named first calculators
                 }
                 print("insertion : \(resultDouble) at \(operandIndex - 1)")
                 operationsToReduce.insert(String(resultDouble), at: operandIndex-1)
-                break
-                
+                print("\(operationsToReduce.count)")
+              //  break
             }
-            
-            else {
-                print("il n'y en a plus")
-                noMultiplyOrDivide = true
+            print("fini")
+            if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
+                return element == "+" || element == "-"
+            }) {
+                print("Il y a des signes non prioritaires")
+                // On trouve des symboles "plus" ou "moins"
+                operandIndex = indexTest //
+                if let firstElement = Double(operationsToReduce[operandIndex-1]) {
+                    left = firstElement
+                }
+                operand = operationsToReduce[operandIndex]
+                if let secondElement = Double(operationsToReduce[operandIndex+1]) {
+                    right = secondElement
+                }
+                let resultDouble = calculating(right: right, operand: operand, left: left)
+                print("Résultat : \(resultDouble)")
+                for _ in 0..<3 {
+                    print("suppr : \(operationsToReduce[operandIndex - 1])")
+                    operationsToReduce.remove(at: operandIndex-1)
+                }
+                print("insertion : \(resultDouble) at \(operandIndex - 1)")
+                operationsToReduce.insert(String(resultDouble), at: operandIndex-1)
             }
+        }
+       // Int or Double ?
+            var number = 0.0
+            var numberInt = 0
+            if let extract = Double(operationsToReduce[0]) {
+                number = extract
+                if number/Double(Int(number)) == 1 || number == 0 {
+                    numberInt = Int(number)
+                    operationsToReduce[0] = String(numberInt)
+                }
+            }
+        if error || operandProb {
+            operationInCreation = "Error"
+        } else {
+            operationInCreation.append(" = \(operationsToReduce.first!)")
         }
     }
     func buttonEqualTapped() {
@@ -257,11 +284,6 @@ class ElectronicBrain { // So were named first calculators
             //notifChangeText()
         }
     }
-    /*
-     func doubleOrInt () {
-     
-     }
-     */
     func calculating (right:Double, operand:String, left:Double)->Double {
         var result = Double()
         resultIsInt = false
