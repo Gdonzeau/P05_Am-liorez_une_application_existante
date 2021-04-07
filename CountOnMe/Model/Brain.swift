@@ -34,7 +34,7 @@ class ElectronicBrain { // So were named first calculators
     var cantAddMinus: Bool { // You can add minus after operator +, x or :. Or at the beginning. Not after - to avoid a potential long queue. -- = +
         return elements.last != "+" && elements.last != "x" && elements.last != ":"
     }
-    var cantAddMinusII: Bool { // You can add minus after operator +, x or :. Or at the beginning. Not after - to avoid a potential long queue. -- = +
+    var cantAddMinusII: Bool {
         return operationInCreation != ""
     }
     var noOperatorToStart: Bool {
@@ -108,12 +108,13 @@ class ElectronicBrain { // So were named first calculators
         }
         // Create local copy of operations
         var operationsToReduce = elements // chgmt
-        var left = 1.00
-        var right = 1.00
-        var operand = ""
+       // var left = 1.00
+       // var right = 1.00
+       // var operand = ""
        // var noMultiplyOrDivide = false
         while operationsToReduce.count > 1 {
-            var operandIndex = 1
+         //   var operandIndex = 1
+            /*
             func onCalcule(indexTest:Int) {
                 operandIndex = indexTest //
                 if let firstElement = Double(operationsToReduce[operandIndex-1]) {
@@ -132,22 +133,35 @@ class ElectronicBrain { // So were named first calculators
                 print("insertion : \(resultDouble) at \(operandIndex - 1)")
                 operationsToReduce.insert(String(resultDouble), at: operandIndex-1)
             }
+ */
             // On trouve x ou : dans elements //First index cherche dans le tableau
             // Retourne le premier index où la condition est vraie.
             if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "x" || element == ":"
             }) {
                 print("Il y a des signes prioritaires")
-                onCalcule(indexTest: indexTest)
+              //  onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "multiplier" ou "diviser"
+                for _ in 0..<3 {
+                    print("suppr : \(operationsToReduce[indexTest - 1])")
+                    operationsToReduce.remove(at: indexTest-1)
+                }
+                print("insertion : \(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)) at \(indexTest - 1)")
+                operationsToReduce.insert(String(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)), at: indexTest-1)
             }
             print("fini")
             if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "+" || element == "-"
             }) {
                 print("Il y a des signes non prioritaires")
-                onCalcule(indexTest: indexTest)
+               // onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "plus" ou "moins"
+                for _ in 0..<3 {
+                    print("suppr : \(operationsToReduce[indexTest - 1])")
+                    operationsToReduce.remove(at: indexTest-1)
+                }
+                print("insertion : \(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)) at \(indexTest - 1)")
+                operationsToReduce.insert(String(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)), at: indexTest-1)
             }
         }
        // Int or Double ?
@@ -165,6 +179,29 @@ class ElectronicBrain { // So were named first calculators
         } else {
             operationInCreation.append(" = \(operationsToReduce.first!)")
         }
+    }
+    func onCalcule(indexTest:Int, operationsToReduce:[String])-> Double {
+        let operandIndex = indexTest //
+        var opeToReduce = operationsToReduce
+        var left = 0.0
+        var right = 0.0
+        
+        if let firstElement = Double(opeToReduce[operandIndex-1]) {
+            left = firstElement
+        }
+        let operand = opeToReduce[operandIndex]
+        if let secondElement = Double(opeToReduce[operandIndex+1]) {
+            right = secondElement
+        }
+        let resultDouble = calculating(right: right, operand: operand, left: left)
+        print("Résultat : \(resultDouble)")
+        for _ in 0..<3 {
+            print("suppr : \(operationsToReduce[operandIndex - 1])")
+            opeToReduce.remove(at: operandIndex-1)
+        }
+        print("insertion : \(resultDouble) at \(operandIndex - 1)")
+        opeToReduce.insert(String(resultDouble), at: operandIndex-1)
+        return resultDouble
     }
     func calculating (right:Double, operand:String, left:Double)->Double {
         var result = Double()
