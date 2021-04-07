@@ -142,12 +142,13 @@ class ElectronicBrain { // So were named first calculators
                 print("Il y a des signes prioritaires")
               //  onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "multiplier" ou "diviser"
+                let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 for _ in 0..<3 {
                     print("suppr : \(operationsToReduce[indexTest - 1])")
                     operationsToReduce.remove(at: indexTest-1)
                 }
-                print("insertion : \(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)) at \(indexTest - 1)")
-                operationsToReduce.insert(String(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)), at: indexTest-1)
+                print("insertion : \(operation) at \(indexTest - 1)")
+                operationsToReduce.insert(String(operation), at: indexTest-1)
             }
             print("fini")
             if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
@@ -156,12 +157,13 @@ class ElectronicBrain { // So were named first calculators
                 print("Il y a des signes non prioritaires")
                // onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "plus" ou "moins"
+                let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 for _ in 0..<3 {
                     print("suppr : \(operationsToReduce[indexTest - 1])")
                     operationsToReduce.remove(at: indexTest-1)
                 }
-                print("insertion : \(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)) at \(indexTest - 1)")
-                operationsToReduce.insert(String(onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)), at: indexTest-1)
+                print("insertion : \(operation) at \(indexTest - 1)")
+                operationsToReduce.insert(String(operation), at: indexTest-1)
             }
         }
        // Int or Double ?
@@ -182,7 +184,7 @@ class ElectronicBrain { // So were named first calculators
     }
     func onCalcule(indexTest:Int, operationsToReduce:[String])-> Double {
         let operandIndex = indexTest //
-        var opeToReduce = operationsToReduce
+        let opeToReduce = operationsToReduce
         var left = 0.0
         var right = 0.0
         
@@ -194,6 +196,7 @@ class ElectronicBrain { // So were named first calculators
             right = secondElement
         }
         let resultDouble = calculating(right: right, operand: operand, left: left)
+        /*
         print("Résultat : \(resultDouble)")
         for _ in 0..<3 {
             print("suppr : \(operationsToReduce[operandIndex - 1])")
@@ -201,6 +204,7 @@ class ElectronicBrain { // So were named first calculators
         }
         print("insertion : \(resultDouble) at \(operandIndex - 1)")
         opeToReduce.insert(String(resultDouble), at: operandIndex-1)
+ */
         return resultDouble
     }
     func calculating (right:Double, operand:String, left:Double)->Double {
