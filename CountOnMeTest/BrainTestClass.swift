@@ -76,6 +76,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.cantAddMinus,true)
         brain.buttonEqualTapped()
         XCTAssertEqual(brain.operationInCreation," -2 x  -4 = 8")
+     //   XCTAssertEqual(brain.elements.count, 1)
         
     }
     
@@ -90,6 +91,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.error,false)
     }
     func testGivenAllElementsExistAndAreIntOrDouble_WhenEqualIsTaped_ThenResultIsGivenForAllOperators() {
+        
         XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "-")
         brain.addElements(digit: "9")
@@ -121,6 +123,7 @@ class BrainTestClass: XCTestCase {
         operand = "x"
         result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssertEqual(result,-54)
+ 
     }
     func testGivenfirstElement_WhenDividingBy0_ThenDivideBy0IsTrue() {
         XCTAssertEqual(brain.elements.count,0)
