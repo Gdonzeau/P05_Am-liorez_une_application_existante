@@ -16,7 +16,6 @@ class BrainTestClass: XCTestCase {
         super.setUp()
             // Initialiser brain.
         brain = ElectronicBrain() // Remet tout à zéro. Nouvel objet
-        
     }
     override class func tearDown() { // Se lance une fois que TOUS les tests sont faits.
             }
@@ -64,9 +63,9 @@ class BrainTestClass: XCTestCase {
     }
     
     func testGivenFirstPlaceIsEmpty_WhenMultiplyingByNegtiveNumber_ThenItIsAccepted() {
-        XCTAssertEqual(brain.cantAddMinusII,false)
+        XCTAssertEqual(brain.operationIsNotEmpty,false)
         brain.operation(signOperator: "-")
-        XCTAssertEqual(brain.cantAddMinusII,true)
+        XCTAssertEqual(brain.operationIsNotEmpty,true)
         brain.addElements(digit: "2")
         brain.operation(signOperator: "x")
         XCTAssertEqual(brain.cantAddMinus,false)
@@ -143,16 +142,16 @@ class BrainTestClass: XCTestCase {
     }
     func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpresionIsNotCorrect() {
         XCTAssertEqual(brain.elements.count,0)
-        XCTAssertEqual(brain.expressionIsCorrect,true)
+        XCTAssertEqual(brain.lastIsNotAnOperator,true)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
         brain.buttonEqualTapped()
-        XCTAssertEqual(brain.expressionIsCorrect,false)
+        XCTAssertEqual(brain.lastIsNotAnOperator,false)
     }
     func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
         XCTAssertFalse(brain.error) // *********************
-        XCTAssertNotEqual(brain.error,true)
+        XCTAssertFalse(brain.error)
         XCTAssertNotEqual(brain.operationInCreation,"Error")
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")

@@ -21,38 +21,18 @@ class ElectronicBrain { // So were named first calculators
     var elements: [String] {
         return operationInCreation.split(separator: " ").map { "\($0)" }
     }
-    /*
-    var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
-    }
-    */
     var expressionHasEnoughElement: Bool {
         return elements.count >= 3
     }
-    /*
-    var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
-    }
-    */
     var lastIsNotAnOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
     var cantAddMinus: Bool { // You can add minus after operator +, x or :. Or at the beginning. Not after - to avoid a potential long queue. -- = +
         return elements.last != "+" && elements.last != "x" && elements.last != ":"
     }
-    /*
-    var cantAddMinusII: Bool {
-        return operationInCreation != ""
-    }
-    */
     var operationIsNotEmpty: Bool {
         return operationInCreation != ""
     }
-    /*
-    var noOperatorToStart: Bool {
-        return operationInCreation != ""
-    }
-    */
     var operatorIsDivide : Bool {
         return elements.last == ":"
     }
@@ -122,11 +102,11 @@ class ElectronicBrain { // So were named first calculators
         while operationsToReduce.count > 1 {
             // On trouve x ou : dans elements //First index cherche dans le tableau
             // Retourne le premier index où la condition est vraie.
-            if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
+            while let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "x" || element == ":"
             }) {
                 print("Il y a des signes prioritaires")
-              //  onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
+                //  onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "multiplier" ou "diviser"
                 let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 for _ in 0..<3 {
@@ -135,13 +115,15 @@ class ElectronicBrain { // So were named first calculators
                 }
                 print("insertion : \(operation) at \(indexTest - 1)")
                 operationsToReduce.insert(String(operation), at: indexTest-1)
+                
             }
+            
             print("fini")
             if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "+" || element == "-"
             }) {
                 print("Il y a des signes non prioritaires")
-               // onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
+                // onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 // On trouve des symboles "plus" ou "moins"
                 let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
                 for _ in 0..<3 {
@@ -152,16 +134,16 @@ class ElectronicBrain { // So were named first calculators
                 operationsToReduce.insert(String(operation), at: indexTest-1)
             }
         }
-       // Int or Double ?
-            var number = 0.0
-            var numberInt = 0
-            if let extract = Double(operationsToReduce[0]) {
-                number = extract
-                if number/Double(Int(number)) == 1 || number == 0 {
-                    numberInt = Int(number)
-                    operationsToReduce[0] = String(numberInt)
-                }
+        // Int or Double ?
+        var number = 0.0
+        var numberInt = 0
+        if let extract = Double(operationsToReduce[0]) {
+            number = extract
+            if number/Double(Int(number)) == 1 || number == 0 {
+                numberInt = Int(number)
+                operationsToReduce[0] = String(numberInt)
             }
+        }
         if error || operandProb {
             operationInCreation = "Error"
         } else {
