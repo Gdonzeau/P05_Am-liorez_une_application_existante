@@ -46,8 +46,13 @@ class ElectronicBrain { // So were named first calculators
         return operationInCreation.firstIndex(of: "=") != nil
     }
     
-    var expressionIsNotDividedByZero: Bool {
-        return operationInCreation.contains(": 0")||operationInCreation.contains(": -0") // Espace ou non ?
+    var expressionIsDividedByZero: Bool {
+        print("OPE: \(operationInCreation)")
+        return operationInCreation.contains(": 0") || operationInCreation.contains(": -0") // Espace ou non ?
+    }
+    var resultIsDouble : Bool {
+        print("Content")
+        return true
     }
     
     func operation(signOperator:String?) { // taped an operator 
@@ -57,7 +62,7 @@ class ElectronicBrain { // So were named first calculators
         }
         if signOperator == "-" && (cantAddMinus == false || operationIsNotEmpty == false) {
             if let sign = signOperator {
-                operationInCreation.append(" \(sign)") //Not space at the end, to be added to the number
+                operationInCreation.append("\(sign)") //Not space at the end, to be added to the number
                 return
             }
         }
@@ -102,14 +107,16 @@ class ElectronicBrain { // So were named first calculators
         operationInCreation = ""
     }
     func resolvingOperation() {
+        
         guard lastIsNotAnOperator else { // chgmt
             return
         }
         guard expressionHasEnoughElement else { // chgmt
             return
         }
-        guard expressionIsNotDividedByZero == false else {
+        if expressionIsDividedByZero {
             print("division par 0")
+            operationInCreation = "Error"
             return
         }
         // Create local copy of operations
@@ -117,13 +124,15 @@ class ElectronicBrain { // So were named first calculators
         while operationsToReduce.count > 1 { // À mettre dans une fonction
             // On trouve x ou : dans elements //First index cherche dans le tableau
             // Retourne le premier index où la condition est vraie.
+            operationsToReduce = reducingOperation(operationsToReduce: operationsToReduce)
+            /*
             var operandIndex = 1
             if let index = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "x" || element == ":"
             }) {
                 operandIndex = index
             }// else { // Potentiellement = 1 ou par défaut = 1.
-            guard let left = Double(operationsToReduce[operandIndex-1]), let right = Double(operationsToReduce[operandIndex+1]) else {
+            guard let left = Double(operationsToReduce[operandIndex - 1]), let right = Double(operationsToReduce[operandIndex + 1]) else {
                 return
             }
             let operand = operationsToReduce[operandIndex]
@@ -137,60 +146,19 @@ class ElectronicBrain { // So were named first calculators
                 result = 0.0
                 break
             }
-            //
+            
             for _ in 0..<3 {
                 print("suppr : \(operationsToReduce[operandIndex - 1])")
                 operationsToReduce.remove(at: operandIndex - 1)
             }
             print("insertion : \(result) at \(operandIndex - 1)")
             operationsToReduce.insert(String(result), at: operandIndex - 1)
-            
-            
-            /*
-            while let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
-                return element == "x" || element == ":"
-            }) {
-                print("Il y a des signes prioritaires")
-                //  onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
-                // On trouve des symboles "multiplier" ou "diviser"
-                let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
-                for _ in 0..<3 {
-                    print("suppr : \(operationsToReduce[indexTest - 1])")
-                    operationsToReduce.remove(at: indexTest-1)
-                }
-                print("insertion : \(operation) at \(indexTest - 1)")
-                operationsToReduce.insert(String(operation), at: indexTest-1)
-            }
-            print("fini")
-            if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
-                return element == "+" || element == "-"
-            }) {
-                print("Il y a des signes non prioritaires")
-                // onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
-                // On trouve des symboles "plus" ou "moins"
-                let operation = onCalcule(indexTest: indexTest,operationsToReduce: operationsToReduce)
-                for _ in 0..<3 {
-                    print("suppr : \(operationsToReduce[indexTest - 1])")
-                    operationsToReduce.remove(at: indexTest-1)
-                }
-                print("insertion : \(operation) at \(indexTest - 1)")
-                operationsToReduce.insert(String(operation), at: indexTest-1)
-            }
             */
         }
         
-        // Plus nécessaire. A mettre lorsque la divsion est 0
-        if expressionIsNotDividedByZero == false {
-            operationInCreation = "Error"
-            return
-        }
-        if error || operandProb {
-            operationInCreation = "Error"
-        } else {
-            operationInCreation.append(" = \(operationsToReduce.first!)")
-        }
         // À mettre dans une fonction
         // Int or Double ?
+        print("Int ou Double ?")
         var number = 0.0
         var numberInt = 0
         if let extract = Double(operationsToReduce[0]) {
@@ -198,48 +166,41 @@ class ElectronicBrain { // So were named first calculators
             if number/Double(Int(number)) == 1 || number == 0 {
                 numberInt = Int(number)
                 operationsToReduce[0] = String(numberInt)
+                operationInCreation.append(" = \(String(numberInt))")
+            } else {
+                operationInCreation.append(" = \(String(number))")
             }
         }
-        
     }
-    private func onCalcule(indexTest:Int, operationsToReduce:[String])-> Double {
-        let operandIndex = indexTest //
-        let opeToReduce = operationsToReduce
-        var left = 0.0
-        var right = 0.0
-        
-        if let firstElement = Double(opeToReduce[operandIndex-1]) {
-            left = firstElement
+    func reducingOperation(operationsToReduce:[String]) -> [String] {
+        var operationToReduce = operationsToReduce
+        var operandIndex = 1
+        if let index = operationsToReduce.firstIndex(where: { element -> Bool in
+            return element == "x" || element == ":"
+        }) {
+            operandIndex = index
+        }// else { // Potentiellement = 1 ou par défaut = 1.
+        guard let left = Double(operationsToReduce[operandIndex - 1]), let right = Double(operationsToReduce[operandIndex + 1]) else {
+            return operationToReduce
         }
-        let operand = opeToReduce[operandIndex]
-        if let secondElement = Double(opeToReduce[operandIndex+1]) {
-            right = secondElement
-        }
-        let resultDouble = calculating(right: right, operand: operand, left: left)
-        return resultDouble
-    }
-    func calculating (right:Double, operand:String, left:Double)->Double {
-        var result = Double()
-        resultIsInt = false
+        let operand = operationsToReduce[operandIndex]
+        var result:Double
         switch operand {
         case "+": result = left + right
         case "-": result = left - right
         case "x": result = left * right
         case ":": result = left / right
-        default: // If not +, - or x so only : can be taped
-            if right != 0 {
-                result = left / right
-            } else {
-                print("Impossible de diviser par zéro")
-                error = true
-                result = 0
-            }
+        default:
+            result = 0.0
+            break
         }
-        if result/Double(Int(result)) == 1 || result == 0 {
-            print("Le résultat \(Int(result)) est un entier")
-            resultIsInt = true
+        for _ in 0..<3 {
+            print("suppr : \(operationToReduce[operandIndex - 1])")
+            operationToReduce.remove(at: operandIndex - 1)
         }
-        return result
+        print("insertion : \(result) at \(operandIndex - 1)")
+        operationToReduce.insert(String(result), at: operandIndex - 1)
+        return operationToReduce
     }
     private func notifChangeText() {
         let name = Notification.Name(rawValue: "messageTextCompleted")
