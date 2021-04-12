@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     }
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         //brain.buttonEqualTapped_SecondVersion()
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         
     }
     @objc func actionTextComplete() {

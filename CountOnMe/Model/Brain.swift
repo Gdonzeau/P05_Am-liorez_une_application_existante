@@ -21,24 +21,35 @@ class ElectronicBrain { // So were named first calculators
     var elements: [String] {
         return operationInCreation.split(separator: " ").map { "\($0)" }
     }
+    
     var expressionHasEnoughElement: Bool {
         return elements.count >= 3
     }
+    
     var lastIsNotAnOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
+    
     var cantAddMinus: Bool { // You can add minus after operator +, x or :. Or at the beginning. Not after - to avoid a potential long queue. -- = +
         return elements.last != "+" && elements.last != "x" && elements.last != ":"
     }
+    
     var operationIsNotEmpty: Bool {
         return operationInCreation != ""
     }
+    
     var operatorIsDivide : Bool {
         return elements.last == ":"
     }
+    
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
+    
+    var expressionIsNotDividedByZero: Bool {
+        return operationInCreation.contains(": 0")||operationInCreation.contains(": -0") // Espace ou non ?
+    }
+    
     func operation(signOperator:String?) { // taped an operator 
         if expressionHasResult {
             operationInCreation = ""
@@ -90,18 +101,52 @@ class ElectronicBrain { // So were named first calculators
     func AC() {
         operationInCreation = ""
     }
-    func buttonEqualTapped() {
+    func resolvingOperation() {
         guard lastIsNotAnOperator else { // chgmt
             return
         }
         guard expressionHasEnoughElement else { // chgmt
             return
         }
+        guard expressionIsNotDividedByZero == false else {
+            print("division par 0")
+            return
+        }
         // Create local copy of operations
         var operationsToReduce = elements // chgmt
-        while operationsToReduce.count > 1 {
+        while operationsToReduce.count > 1 { // À mettre dans une fonction
             // On trouve x ou : dans elements //First index cherche dans le tableau
             // Retourne le premier index où la condition est vraie.
+            var operandIndex = 1
+            if let index = operationsToReduce.firstIndex(where: { element -> Bool in
+                return element == "x" || element == ":"
+            }) {
+                operandIndex = index
+            }// else { // Potentiellement = 1 ou par défaut = 1.
+            guard let left = Double(operationsToReduce[operandIndex-1]), let right = Double(operationsToReduce[operandIndex+1]) else {
+                return
+            }
+            let operand = operationsToReduce[operandIndex]
+            var result:Double
+            switch operand {
+            case "+": result = left + right
+            case "-": result = left - right
+            case "x": result = left * right
+            case ":": result = left / right
+            default:
+                result = 0.0
+                break
+            }
+            //
+            for _ in 0..<3 {
+                print("suppr : \(operationsToReduce[operandIndex - 1])")
+                operationsToReduce.remove(at: operandIndex - 1)
+            }
+            print("insertion : \(result) at \(operandIndex - 1)")
+            operationsToReduce.insert(String(result), at: operandIndex - 1)
+            
+            
+            /*
             while let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "x" || element == ":"
             }) {
@@ -115,9 +160,7 @@ class ElectronicBrain { // So were named first calculators
                 }
                 print("insertion : \(operation) at \(indexTest - 1)")
                 operationsToReduce.insert(String(operation), at: indexTest-1)
-                
             }
-            
             print("fini")
             if let indexTest = operationsToReduce.firstIndex(where: { element -> Bool in
                 return element == "+" || element == "-"
@@ -133,7 +176,20 @@ class ElectronicBrain { // So were named first calculators
                 print("insertion : \(operation) at \(indexTest - 1)")
                 operationsToReduce.insert(String(operation), at: indexTest-1)
             }
+            */
         }
+        
+        // Plus nécessaire. A mettre lorsque la divsion est 0
+        if expressionIsNotDividedByZero == false {
+            operationInCreation = "Error"
+            return
+        }
+        if error || operandProb {
+            operationInCreation = "Error"
+        } else {
+            operationInCreation.append(" = \(operationsToReduce.first!)")
+        }
+        // À mettre dans une fonction
         // Int or Double ?
         var number = 0.0
         var numberInt = 0
@@ -144,11 +200,7 @@ class ElectronicBrain { // So were named first calculators
                 operationsToReduce[0] = String(numberInt)
             }
         }
-        if error || operandProb {
-            operationInCreation = "Error"
-        } else {
-            operationInCreation.append(" = \(operationsToReduce.first!)")
-        }
+        
     }
     private func onCalcule(indexTest:Int, operationsToReduce:[String])-> Double {
         let operandIndex = indexTest //
@@ -173,6 +225,7 @@ class ElectronicBrain { // So were named first calculators
         case "+": result = left + right
         case "-": result = left - right
         case "x": result = left * right
+        case ":": result = left / right
         default: // If not +, - or x so only : can be taped
             if right != 0 {
                 result = left / right

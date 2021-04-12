@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import CountOnMe
+// Mettre 3/4 lignes par test.
 
 class BrainTestClass: XCTestCase {
     var brain:ElectronicBrain!
@@ -73,7 +74,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.cantAddMinus,true)
         brain.addElements(digit: "4")
         XCTAssertEqual(brain.cantAddMinus,true)
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         XCTAssertEqual(brain.operationInCreation," -2 x  -4 = 8")
      //   XCTAssertEqual(brain.elements.count, 1)
         
@@ -96,10 +97,12 @@ class BrainTestClass: XCTestCase {
         brain.addElements(digit: "9")
         brain.operation(signOperator: "+")
         brain.addElements(digit: "6")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
+        var result = Int(brain.operationInCreation)
         var left = Double()
         var right = Double()
         var operand = String()
+        /*
         if let leftPart = Double(brain.elements[0]) {
             left = leftPart
         }
@@ -109,18 +112,19 @@ class BrainTestClass: XCTestCase {
         let operandSign = brain.elements[1]
         operand = operandSign
         var result = brain.calculating(right: right, operand: operand, left: left)
+        */
         XCTAssertEqual(result,-3)
         
         operand = "-"
-        result = brain.calculating(right: right, operand: operand, left: left)
+       // result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssertEqual(result,-15)
         
         operand = ":"
-        result = brain.calculating(right: right, operand: operand, left: left)
-        XCTAssertEqual(result,-1.5)
+       // result = brain.calculating(right: right, operand: operand, left: left)
+       // XCTAssertEqual(result,-1.5)
         
         operand = "x"
-        result = brain.calculating(right: right, operand: operand, left: left)
+       // result = brain.calculating(right: right, operand: operand, left: left)
         XCTAssertEqual(result,-54)
  
     }
@@ -137,7 +141,7 @@ class BrainTestClass: XCTestCase {
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         XCTAssertEqual(brain.expressionHasEnoughElement,false)
     }
     func testGivenNotAllElementsExist_WhenEqualIsTaped_ThenExpresionIsNotCorrect() {
@@ -146,7 +150,7 @@ class BrainTestClass: XCTestCase {
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         XCTAssertEqual(brain.lastIsNotAnOperator,false)
     }
     func testGivenElementsExist_WhenDividingBy0_ThenErrorIsReturned() {
@@ -158,7 +162,7 @@ class BrainTestClass: XCTestCase {
         brain.operation(signOperator: ":")
         brain.operation(signOperator:"-")
         brain.addElements(digit: "0")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         XCTAssertTrue(brain.error)
         XCTAssertEqual(brain.operationInCreation,"Error")
     }
@@ -170,7 +174,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.elements[0],"32")
         brain.operation(signOperator: "+")
         brain.addElements(digit: "6")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         brain.addElements(digit: "1")
         XCTAssertEqual(brain.elements[0],"1")
     }
@@ -180,7 +184,7 @@ class BrainTestClass: XCTestCase {
         brain.addElements(digit: "2")
         brain.operation(signOperator: "+")
         brain.addElements(digit: "6")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         brain.operation(signOperator: "+")
         XCTAssertEqual(brain.operationInCreation,"")
     }
@@ -188,7 +192,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
-        brain.buttonEqualTapped()
+        brain.resolvingOperation()
         XCTAssertEqual(brain.expressionHasEnoughElement,false)
     }
 }
