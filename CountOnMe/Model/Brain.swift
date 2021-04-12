@@ -50,10 +50,6 @@ class ElectronicBrain { // So were named first calculators
         print("OPE: \(operationInCreation)")
         return operationInCreation.contains(": 0") || operationInCreation.contains(": -0") // Espace ou non ?
     }
-    var resultIsDouble : Bool {
-        print("Content")
-        return true
-    }
     
     func operation(signOperator:String?) { // taped an operator 
         if expressionHasResult {
@@ -120,59 +116,13 @@ class ElectronicBrain { // So were named first calculators
             return
         }
         // Create local copy of operations
-        var operationsToReduce = elements // chgmt
-        while operationsToReduce.count > 1 { // À mettre dans une fonction
-            // On trouve x ou : dans elements //First index cherche dans le tableau
-            // Retourne le premier index où la condition est vraie.
+        var operationsToReduce = elements
+        while operationsToReduce.count > 1 {
             operationsToReduce = reducingOperation(operationsToReduce: operationsToReduce)
-            /*
-            var operandIndex = 1
-            if let index = operationsToReduce.firstIndex(where: { element -> Bool in
-                return element == "x" || element == ":"
-            }) {
-                operandIndex = index
-            }// else { // Potentiellement = 1 ou par défaut = 1.
-            guard let left = Double(operationsToReduce[operandIndex - 1]), let right = Double(operationsToReduce[operandIndex + 1]) else {
-                return
-            }
-            let operand = operationsToReduce[operandIndex]
-            var result:Double
-            switch operand {
-            case "+": result = left + right
-            case "-": result = left - right
-            case "x": result = left * right
-            case ":": result = left / right
-            default:
-                result = 0.0
-                break
-            }
-            
-            for _ in 0..<3 {
-                print("suppr : \(operationsToReduce[operandIndex - 1])")
-                operationsToReduce.remove(at: operandIndex - 1)
-            }
-            print("insertion : \(result) at \(operandIndex - 1)")
-            operationsToReduce.insert(String(result), at: operandIndex - 1)
-            */
         }
-        
-        // À mettre dans une fonction
-        // Int or Double ?
-        print("Int ou Double ?")
-        var number = 0.0
-        var numberInt = 0
-        if let extract = Double(operationsToReduce[0]) {
-            number = extract
-            if number/Double(Int(number)) == 1 || number == 0 {
-                numberInt = Int(number)
-                operationsToReduce[0] = String(numberInt)
-                operationInCreation.append(" = \(String(numberInt))")
-            } else {
-                operationInCreation.append(" = \(String(number))")
-            }
-        }
+        resultIsDoubleOrInt(operationToReduce: operationsToReduce)
     }
-    func reducingOperation(operationsToReduce:[String]) -> [String] {
+    private func reducingOperation(operationsToReduce:[String]) -> [String] {
         var operationToReduce = operationsToReduce
         var operandIndex = 1
         if let index = operationsToReduce.firstIndex(where: { element -> Bool in
@@ -201,6 +151,22 @@ class ElectronicBrain { // So were named first calculators
         print("insertion : \(result) at \(operandIndex - 1)")
         operationToReduce.insert(String(result), at: operandIndex - 1)
         return operationToReduce
+    }
+    private func resultIsDoubleOrInt(operationToReduce:[String]) {
+        var operationsToReduce = operationToReduce
+        print("Int ou Double ?")
+        var number = 0.0
+        var numberInt = 0
+        if let extract = Double(operationsToReduce[0]) {
+            number = extract
+            if number/Double(Int(number)) == 1 || number == 0 {
+                numberInt = Int(number)
+                operationsToReduce[0] = String(numberInt)
+                operationInCreation.append(" = \(String(numberInt))")
+            } else {
+                operationInCreation.append(" = \(String(number))")
+            }
+        }
     }
     private func notifChangeText() {
         let name = Notification.Name(rawValue: "messageTextCompleted")
