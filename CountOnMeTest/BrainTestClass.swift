@@ -185,4 +185,15 @@ class BrainTestClass: XCTestCase {
         brain.resolvingOperation()
         XCTAssertEqual(brain.expressionHasEnoughElement,false)
     }
+    // #19
+    func testGivenElementsAreReady_WhenOperatorIsDivide_ThenResultCanBeADouble() {
+        XCTAssertEqual(brain.elements.count,0)
+        brain.addElements(digit: "1")
+        brain.addElements(digit: "1")
+        brain.operation(signOperator: ":")
+        brain.addElements(digit: "2")
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"11 : 2 = 5.5")
+        XCTAssertEqual(brain.elements.last,"5.5")
+    }
 }

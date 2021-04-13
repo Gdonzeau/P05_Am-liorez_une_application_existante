@@ -10,45 +10,44 @@ import Foundation
 
 class ElectronicBrain { // So were named first calculators
     var operationInCreation = "" {
-        didSet {
+        didSet { // Each time the operation is changed, we send notification
             notifChangeText()
         }
     } // Changer le nom
     var error = false // Just try to divide by 0...
-    var operandProb = false
+    //var operandProb = false
     var resultIsInt = false
-    var numberOfMultiplyOrDivide = 0
+    //var numberOfMultiplyOrDivide = 0
     var elements: [String] {
         return operationInCreation.split(separator: " ").map { "\($0)" }
     }
-    
+
     var expressionHasEnoughElement: Bool {
         return elements.count >= 3
     }
-    
+
     var lastIsNotAnOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != ":"
     }
-    
+
     var cantAddMinus: Bool { // You can add minus after operator +, x or :. Or at the beginning. Not after - to avoid a potential long queue. -- = +
         return elements.last != "+" && elements.last != "x" && elements.last != ":"
     }
-    
+
     var operationIsNotEmpty: Bool {
         return operationInCreation != ""
     }
-    
+
     var operatorIsDivide : Bool {
         return elements.last == ":"
     }
-    
+
     var expressionHasResult: Bool {
         return operationInCreation.firstIndex(of: "=") != nil
     }
-    
+
     var expressionIsDividedByZero: Bool {
-        print("OPE: \(operationInCreation)")
-        return operationInCreation.contains(": 0") || operationInCreation.contains(": -0") // Espace ou non ?
+        return operationInCreation.contains(": 0") || operationInCreation.contains(": -0")
     }
     
     func operation(signOperator:String?) { // taped an operator 
@@ -70,20 +69,17 @@ class ElectronicBrain { // So were named first calculators
     }
     func addElements(digit:String?) { // Tapped number button
         var divideBy0 = false
-        if operatorIsDivide {
-            print("Nous avons un divisé")
+        if operatorIsDivide { // To not divide by O avoiding Error
             if let check = digit {
                 if check == "0" {
-                    print(operatorIsDivide)
-                    print("don't divide by 0")
                     divideBy0 = true
                 }
             }
         }
-        if error || operandProb {
+        if error { // || operandProb {
             operationInCreation = ""
             error = false
-            operandProb = false
+            //operandProb = false
         }
         if expressionHasResult {
             operationInCreation = ""
@@ -124,12 +120,12 @@ class ElectronicBrain { // So were named first calculators
     }
     private func reducingOperation(operationsToReduce:[String]) -> [String] {
         var operationToReduce = operationsToReduce
-        var operandIndex = 1
+        var operandIndex = 1 // Default operator's index is 1
         if let index = operationsToReduce.firstIndex(where: { element -> Bool in
-            return element == "x" || element == ":"
+            return element == "x" || element == ":" // But prioritary operators can be founded at other indexes
         }) {
             operandIndex = index
-        }// else { // Potentiellement = 1 ou par défaut = 1.
+        }
         guard let left = Double(operationsToReduce[operandIndex - 1]), let right = Double(operationsToReduce[operandIndex + 1]) else {
             return operationToReduce
         }
