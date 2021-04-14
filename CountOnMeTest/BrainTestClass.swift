@@ -88,11 +88,19 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.elements.count,0)
     }
     // #9
+    
     func testGivenErrorIsTrue_WhenTappedNumbers_ThenFirstElementsIsEmpty() {
-        brain.error = true
-        brain.addElements(digit: "1")
         XCTAssertEqual(brain.error,false)
+        brain.operationInCreation = "2 : -0"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"Error")
+        XCTAssertEqual(brain.error,true)
+        brain.addElements(digit: "1")
+        XCTAssertEqual(brain.operationInCreation,"")
+        XCTAssertEqual(brain.error,false)
+        
     }
+ 
     // #10
     func testGivenAllElementsExistAndAreIntOrDouble_WhenEqualIsTaped_ThenResultIsGivenForAllOperators() {
         XCTAssertEqual(brain.elements.count,0)
@@ -171,7 +179,7 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.elements.count,0)
         brain.addElements(digit: "1")
         brain.addElements(digit: "2")
-        brain.operation(signOperator: "+")
+        brain.operation(signOperator: "x")
         brain.addElements(digit: "6")
         brain.resolvingOperation()
         brain.operation(signOperator: "+")
@@ -195,5 +203,33 @@ class BrainTestClass: XCTestCase {
         brain.resolvingOperation()
         XCTAssertEqual(brain.operationInCreation,"11 : 2 = 5.5")
         XCTAssertEqual(brain.elements.last,"5.5")
+    }
+    // #20
+    func testGivenAdditionIsReady_WhenPressEqual_ThenRightResultIsGiven() {
+        brain.operationInCreation = "2 + 3"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"2 + 3 = 5")
+        XCTAssertEqual(brain.elements.last,"5")
+    }
+    // #21
+    func testGivenSoustractionIsReady_WhenPressEqual_ThenRightResultIsGiven() {
+        brain.operationInCreation = "2 - 3"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"2 - 3 = -1")
+        XCTAssertEqual(brain.elements.last,"-1")
+    }
+    // #22
+    func testGivenMultiplicationIsReady_WhenPressEqual_ThenRightResultIsGiven() {
+        brain.operationInCreation = "2 x 3"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"2 x 3 = 6")
+        XCTAssertEqual(brain.elements.last,"6")
+    }
+    // #23
+    func testGivenDivisionIsReady_WhenPressEqual_ThenRightResultIsGiven() {
+        brain.operationInCreation = "4 : 2"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"4 : 2 = 2")
+        XCTAssertEqual(brain.elements.last,"2")
     }
 }

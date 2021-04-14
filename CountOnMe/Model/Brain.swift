@@ -15,9 +15,8 @@ class ElectronicBrain { // So were named first calculators
         }
     } // Changer le nom
     var error = false // Just try to divide by 0...
-    //var operandProb = false
     var resultIsInt = false
-    //var numberOfMultiplyOrDivide = 0
+
     var elements: [String] {
         return operationInCreation.split(separator: " ").map { "\($0)" }
     }
@@ -79,6 +78,7 @@ class ElectronicBrain { // So were named first calculators
         if error { // || operandProb {
             operationInCreation = ""
             error = false
+            return
             //operandProb = false
         }
         if expressionHasResult {
@@ -108,6 +108,7 @@ class ElectronicBrain { // So were named first calculators
         }
         if expressionIsDividedByZero {
             print("division par 0")
+            error = true
             operationInCreation = "Error"
             return
         }
