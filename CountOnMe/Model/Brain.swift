@@ -13,15 +13,15 @@ class ElectronicBrain { // So were named first calculators
         didSet { // Each time the operation is changed, we send notification
             notifChangeText()
         }
-    } // Changer le nom
+    }
     var error = false // Just try to divide by 0...
     var resultIsInt = false
 
-    var elements: [String] {
+    var elements: [String] { // each space means that there is a new element
         return operationInCreation.split(separator: " ").map { "\($0)" }
     }
 
-    var expressionHasEnoughElement: Bool {
+    var expressionHasEnoughElement: Bool { // Are there minimum 3 elements ?
         return elements.count >= 3
     }
 
@@ -107,7 +107,6 @@ class ElectronicBrain { // So were named first calculators
             return
         }
         if expressionIsDividedByZero {
-            print("division par 0")
             error = true
             operationInCreation = "Error"
             return
@@ -141,17 +140,15 @@ class ElectronicBrain { // So were named first calculators
             result = 0.0
             break
         }
-        for _ in 0..<3 {
-            print("suppr : \(operationToReduce[operandIndex - 1])")
+        for _ in 0..<3 { // Let's delete these three elements
             operationToReduce.remove(at: operandIndex - 1)
         }
-        print("insertion : \(result) at \(operandIndex - 1)")
-        operationToReduce.insert(String(result), at: operandIndex - 1)
+        operationToReduce.insert(String(result), at: operandIndex - 1) // and let's replace them by the result
         return operationToReduce
     }
     private func resultIsDoubleOrInt(operationToReduce:[String]) {
+        // Let's verify if there are numbers after the point by dividing the Double by its own value Int
         var operationsToReduce = operationToReduce
-        print("Int ou Double ?")
         var number = 0.0
         var numberInt = 0
         if let extract = Double(operationsToReduce[0]) {
@@ -165,7 +162,7 @@ class ElectronicBrain { // So were named first calculators
             }
         }
     }
-    private func notifChangeText() {
+    private func notifChangeText() { // Each time the text is changed, let's send a notification to refresh the text
         let name = Notification.Name(rawValue: "messageTextCompleted")
         let notification = Notification(name: name)
         NotificationCenter.default.post(notification)
