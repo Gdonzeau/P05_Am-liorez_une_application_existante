@@ -75,11 +75,10 @@ class ElectronicBrain { // So were named first calculators
                 }
             }
         }
-        if error { // || operandProb {
+        if error {
             operationInCreation = ""
             error = false
             return
-            //operandProb = false
         }
         if expressionHasResult {
             operationInCreation = ""
