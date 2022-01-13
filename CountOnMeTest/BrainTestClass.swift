@@ -73,6 +73,13 @@ class BrainTestClass: XCTestCase {
         XCTAssertEqual(brain.operationInCreation,"2 + 3 = 5")
         XCTAssertEqual(brain.elements.last,"5")
     }
+    // Fonction quantique
+    func testGivenAdditionIsImpossible_WhenPressEqual_ThenRightResultIsGiven() {
+        brain.operationInCreation = "2 a 3"
+        brain.resolvingOperation()
+        XCTAssertEqual(brain.operationInCreation,"2 a 3 = 0")
+        XCTAssertEqual(brain.elements.last,"0")
+    }
     // #7
     func testGivenSoustractionIsReady_WhenPressEqual_ThenRightResultIsGiven() {
         brain.operationInCreation = "2 - 3"
